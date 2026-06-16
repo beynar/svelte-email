@@ -70,7 +70,7 @@
 				<Text style={footer}>
 					Need help? <Link href="https://example.com/support">Contact support</Link>.
 				</Text>
-				<Text style={footer}>Acme Inc. · 123 Market St · San Francisco, CA </Text>
+				<Text style={footer}>Acme Inc. · 123 Market St · San Francisco, CA</Text>
 			</Section>
 		</Container>
 	</Body>

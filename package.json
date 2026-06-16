@@ -1,15 +1,15 @@
 {
-	"name": "@beynar/svelte-email",
+	"name": "svelte-email-kit",
 	"version": "0.1.0",
 	"description": "A Svelte 5 port of react-email — build and render email-safe HTML emails with Svelte components.",
 	"license": "MIT",
 	"author": "beynar <arnaud@derbey.dev>",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/beynar/svelte-email.git"
+		"url": "git+https://github.com/beynar/svelte-email-kit.git"
 	},
-	"homepage": "https://github.com/beynar/svelte-email#readme",
-	"bugs": "https://github.com/beynar/svelte-email/issues",
+	"homepage": "https://github.com/beynar/svelte-email-kit#readme",
+	"bugs": "https://github.com/beynar/svelte-email-kit/issues",
 	"publishConfig": {
 		"access": "public"
 	},

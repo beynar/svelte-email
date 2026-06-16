@@ -47,7 +47,7 @@ const DYNAMIC_EMAIL = `<a class={cond ? 'bg-red-500' : 'bg-blue-500'}>x</a>`;
 describe('svelteMail — plugin shape', () => {
 	it('exposes name, enforce, and a transform hook', () => {
 		const plugin = svelteMail();
-		expect(plugin.name).toBe('svelte-mail');
+		expect(plugin.name).toBe('svelte-email-kit');
 		expect(plugin.enforce).toBe('pre');
 		// `transform` may be a function or an object hook — either is valid.
 		expect(asFunction(plugin.transform)).toBeTypeOf('function');
@@ -224,7 +224,7 @@ describe('svelteMail — index codegen', () => {
 
 	/** Create a temp project root with an `emails` folder holding the given files. */
 	function makeProject(files: Record<string, string>): { root: string; dir: string } {
-		const root = fs.mkdtempSync(path.join(os.tmpdir(), 'svelte-mail-'));
+		const root = fs.mkdtempSync(path.join(os.tmpdir(), 'svelte-email-kit-'));
 		tmpDirs.push(root);
 		const dir = path.join(root, 'src/emails');
 		fs.mkdirSync(dir, { recursive: true });
@@ -282,7 +282,7 @@ describe('svelteMail — index codegen', () => {
 	});
 
 	it('no-ops when the emails folder does not exist', () => {
-		const root = fs.mkdtempSync(path.join(os.tmpdir(), 'svelte-mail-'));
+		const root = fs.mkdtempSync(path.join(os.tmpdir(), 'svelte-email-kit-'));
 		tmpDirs.push(root);
 		const plugin = svelteMail();
 		asFunction(plugin.configResolved).call({}, { root } as never);

@@ -30,7 +30,7 @@ const escapeHtml = (s: string) =>
 	s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 /**
- * Start the svelte-mail email preview server.
+ * Start the svelte-email-kit email preview server.
  *
  * Serves a small UI listing every email in `dir` and rendering each one (baked
  * by the plugin's pre-transform, then `render`ed via Vite's SSR module graph so
@@ -57,11 +57,20 @@ export function startPreviewServer(vite: ViteDevServer, port: number, dir: strin
 
 	// --- SSE live-reload: notify clients when an email under `dir` changes. ---
 	const clients = new Set<http.ServerResponse>();
+	// The module graph `ssrLoadModule` (above) renders from. We invalidate the
+	// changed module here so the next render re-transforms (re-bakes) it.
+	const ssrGraph = vite.environments.ssr.moduleGraph;
 	const notify = (file: string) => {
 		const inside = !path.relative(dir, file).startsWith('..');
-		if (inside && file.endsWith('.svelte')) {
-			for (const res of clients) res.write('data: reload\n\n');
-		}
+		if (!inside || !file.endsWith('.svelte')) return;
+		// Drop the changed email's cached SSR module *before* telling clients to
+		// reload. The raw watcher event can outrun Vite's own invalidation, so a
+		// browser that refetches the instant it sees the SSE ping would otherwise
+		// re-render the stale module — making the file appear not to update until a
+		// second save. Forcing the invalidation here closes that race.
+		const mods = ssrGraph.getModulesByFile(file);
+		if (mods) for (const mod of mods) ssrGraph.invalidateModule(mod);
+		for (const res of clients) res.write('data: reload\n\n');
 	};
 	vite.watcher.on('change', notify);
 	vite.watcher.on('add', notify);
@@ -141,7 +150,7 @@ function indexPage(emails: EmailEntry[]): string {
 		.join('');
 	const empty = emails.length === 0;
 
-	return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>svelte-mail preview</title>
+	return `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>svelte-email-kit preview</title>
 <style>
   :root { color-scheme: light dark; }
   * { box-sizing: border-box; }
@@ -160,12 +169,12 @@ function indexPage(emails: EmailEntry[]): string {
   .seg button { background: #151517; color: #c7c7cf; border: 0; padding: 6px 12px; cursor: pointer; font: inherit; }
   .seg button[aria-pressed="true"] { background: #e5e7eb; color: #111; }
   .stage { flex: 1; display: grid; place-items: start center; padding: 24px; overflow: auto; background: #141416; }
-  iframe { width: 100%; max-width: none; height: 100%; border: 0; border-radius: 10px; background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,.4); transition: max-width .15s ease; }
+  iframe { width: 100%; max-width: 800px; height: 100%; border: 0; border-radius: 10px; background: #fff; box-shadow: 0 8px 30px rgba(0,0,0,.4); transition: max-width .15s ease; }
   .empty { padding: 40px; color: #8b8b93; }
 </style></head>
 <body>
   <aside>
-    <div class="brand">svelte-mail<small>email preview</small></div>
+    <div class="brand">svelte-email-kit<small>email preview</small></div>
     ${empty ? '<div class="empty">No .svelte emails found.</div>' : items}
   </aside>
   <main>
@@ -195,7 +204,7 @@ function indexPage(emails: EmailEntry[]): string {
   document.querySelector('.item')?.setAttribute('aria-current', 'true');
   document.querySelectorAll('.seg button').forEach((b) => b.addEventListener('click', () => {
     document.querySelectorAll('.seg button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    frame.style.maxWidth = b.dataset.w === 'full' ? 'none' : b.dataset.w + 'px';
+    frame.style.maxWidth = b.dataset.w === 'full' ? '800px' : b.dataset.w + 'px';
   }));
   // live reload on email change
   try {

@@ -1,4 +1,4 @@
-# @beynar/svelte-email
+# svelte-email-kit
 
 **Build and send beautiful, email-client-safe HTML emails with Svelte 5 components.**
 
@@ -18,7 +18,7 @@ Typed Svelte 5 components (table layouts, inline styles, Outlook MSO hacks), a `
 - 🅾️ **Outlook-ready out of the box** — the `Button` MSO padding hack, `Preview` invisible-Unicode inbox padding, and `Font` `@font-face` + fallback rule.
 - 🎨 **Typed CSS-in-JS** — `style={{ color: 'red' }}` checked via `csstype` (or a raw string), plus `m`/`mx`/`my`/… margin shorthands.
 - 📝 **Plain-text output** — the second element of `render()`'s tuple, produced via `html-to-text` (skips images and the hidden `<Preview>`).
-- 🌬️ **Build-time Tailwind v4** — the `@beynar/svelte-email/vite` plugin bakes utility classes into inline styles and hoists responsive/stateful rules into `<Head>`. **Zero Tailwind, PostCSS, or HTML parser at runtime.**
+- 🌬️ **Build-time Tailwind v4** — the `svelte-email-kit/vite` plugin bakes utility classes into inline styles and hoists responsive/stateful rules into `<Head>`. **Zero Tailwind, PostCSS, or HTML parser at runtime.**
 - 🧬 **Email-safe value resolution** — `oklch()`→`rgb()`, opacity modifiers→`rgba()`, `calc()` and `rem`→`px`, logical→physical properties, `rounded-full`→`9999px`.
 - 🗂️ **Auto-generated typed registry** — `import { emails } from './emails'; await emails.welcome({ name })` with props inferred from each component.
 - ♻️ **First-class dev mode** — edit a class and the preview hot-reloads; add/remove an email and the registry regenerates.
@@ -31,7 +31,7 @@ Typed Svelte 5 components (table layouts, inline styles, Outlook MSO hacks), a `
 ## Install
 
 ```sh
-pnpm add @beynar/svelte-email        # peer dependency: svelte@^5
+pnpm add svelte-email-kit        # peer dependency: svelte@^5
 ```
 
 `marked` (Markdown) and `prismjs` (CodeBlock) come bundled — nothing extra for those. Tailwind support is **build-time only**:
@@ -59,7 +59,7 @@ Write an email as an ordinary Svelte 5 component:
 		Heading,
 		Text,
 		Button
-	} from '@beynar/svelte-email';
+	} from 'svelte-email-kit';
 
 	let { name = 'there' }: { name?: string } = $props();
 </script>
@@ -92,7 +92,7 @@ Write an email as an ordinary Svelte 5 component:
 Render it:
 
 ```ts
-import { render } from '@beynar/svelte-email';
+import { render } from 'svelte-email-kit';
 import WelcomeEmail from './emails/WelcomeEmail.svelte';
 
 const [html, text] = await render(WelcomeEmail, { name: 'Ada' });
@@ -109,7 +109,7 @@ const [html, text] = await render(WelcomeEmail, { name: 'Ada' });
 
 ```ts
 import { Resend } from 'resend';
-import { render } from '@beynar/svelte-email';
+import { render } from 'svelte-email-kit';
 import WelcomeEmail from './emails/WelcomeEmail.svelte';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -132,7 +132,7 @@ Add a `send_email` binding to `wrangler.jsonc` (`{ "send_email": [{ "name": "EMA
 
 ```ts
 // a SvelteKit +server.ts on Cloudflare Workers
-import { render } from '@beynar/svelte-email';
+import { render } from 'svelte-email-kit';
 import WelcomeEmail from '../emails/WelcomeEmail.svelte';
 
 export const GET = async ({ platform }) => {
@@ -155,7 +155,7 @@ export const GET = async ({ platform }) => {
 
 ```ts
 import nodemailer from 'nodemailer';
-import { render } from '@beynar/svelte-email';
+import { render } from 'svelte-email-kit';
 import WelcomeEmail from './emails/WelcomeEmail.svelte';
 
 const transporter = nodemailer.createTransport({
@@ -201,7 +201,7 @@ Destructure whichever parts you need: `const [html] = await render(…)` for HTM
 - **`toPlainText(html, options?): Promise<string>`** — HTML → plain text (the same helper `render()` uses for the `text` part).
 - **`cleanSvelteMarkup(html): string`** — strip Svelte 5 SSR hydration artifacts (used internally; exported for advanced use).
 - **Style helpers:** `styleToString`, `mergeStyle`, `withMargin`, `parsePadding`, `pxToPt`. Types: `RenderResult`, `RenderOptions`, `CSSProperties`, `Style`, `Margin`.
-- **Subpath:** `import { render, toPlainText } from '@beynar/svelte-email/render'` pulls in only the render pipeline (no components).
+- **Subpath:** `import { render, toPlainText } from 'svelte-email-kit/render'` pulls in only the render pipeline (no components).
 
 ## Component reference
 
@@ -247,11 +247,11 @@ Every component accepts a typed `style` prop (a `CSSProperties` object, e.g. `st
 
 ## Build-time Tailwind (Vite plugin)
 
-Tailwind is handled entirely at **build time** by `@beynar/svelte-email/vite`. It rewrites your email `.svelte` source before the Svelte compiler sees it, baking utility classes into inline styles (plus a `<Head>` `<style>` for responsive/stateful rules). The **runtime stays plain `render()`** — no Tailwind, PostCSS, or HTML parser loads when you send mail.
+Tailwind is handled entirely at **build time** by `svelte-email-kit/vite`. It rewrites your email `.svelte` source before the Svelte compiler sees it, baking utility classes into inline styles (plus a `<Head>` `<style>` for responsive/stateful rules). The **runtime stays plain `render()`** — no Tailwind, PostCSS, or HTML parser loads when you send mail.
 
 ```ts
 // vite.config.ts
-import { svelteMail } from '@beynar/svelte-email/vite';
+import { svelteMail } from 'svelte-email-kit/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 export default {

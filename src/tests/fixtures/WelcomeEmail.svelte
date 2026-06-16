@@ -35,15 +35,20 @@
 			}}
 		/>
 	</Head>
-	<Preview children="HIDDEN_PREVIEW_TEXT — welcome to svelte-mail." />
+	<Preview children="HIDDEN_PREVIEW_TEXT — welcome to svelte-email-kit." />
 	<Body style={{ backgroundColor: '#ffffff', fontFamily: 'sans-serif' }}>
 		<Container>
 			<Section>
 				<Row>
 					<Column>
-						<Img src="https://svelte.dev/favicon.png" alt="svelte-mail" width={48} height={48} />
+						<Img
+							src="https://svelte.dev/favicon.png"
+							alt="svelte-email-kit"
+							width={48}
+							height={48}
+						/>
 						<Heading as="h1">Welcome, {name}!</Heading>
-						<Text>Thanks for joining svelte-mail. We're glad you're here.</Text>
+						<Text>Thanks for joining svelte-email-kit. We're glad you're here.</Text>
 						<Button
 							href="https://example.com/get-started"
 							style={{

@@ -38,7 +38,7 @@ export interface GenerateMapOptions {
 }
 
 /**
- * Load the build-time peer dependencies. They are not bundled with `svelte-mail`,
+ * Load the build-time peer dependencies. They are not bundled with `svelte-email-kit`,
  * so consumers only pay for them in the build (the Vite plugin), never at runtime.
  */
 async function loadDeps() {
@@ -57,7 +57,7 @@ async function loadDeps() {
 		};
 	} catch {
 		throw new Error(
-			"svelte-mail: building the Tailwind map requires 'tailwindcss@^4' and 'postcss'. " +
+			"svelte-email-kit: building the Tailwind map requires 'tailwindcss@^4' and 'postcss'. " +
 				'Install them to use the build-time Tailwind support.'
 		);
 	}

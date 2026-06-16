@@ -16,11 +16,11 @@ const EMAILS: Record<string, Component<any>> = {
 };
 
 const DEFAULT_TO = 'arnaud@derbey.dev';
-const FROM = { email: 'test@hello.beynar.dev', name: 'svelte-mail' };
+const FROM = { email: 'test@hello.beynar.dev', name: 'svelte-email-kit' };
 
 /**
  * Public test endpoint: `GET /send-test?to=<addr>&email=<welcome|tailwind|otp|receipt>`.
- * Renders an svelte-mail email and sends it via the Cloudflare `EMAIL` binding,
+ * Renders an svelte-email-kit email and sends it via the Cloudflare `EMAIL` binding,
  * returning JSON with the `messageId` on success or the error `code`/`message`.
  */
 export const GET: RequestHandler = async ({ url, platform }) => {
@@ -52,7 +52,7 @@ export const GET: RequestHandler = async ({ url, platform }) => {
 		const res = await platform.env.EMAIL.send({
 			to,
 			from: FROM,
-			subject: `svelte-mail test — ${which}`,
+			subject: `svelte-email-kit test — ${which}`,
 			html,
 			text
 		});

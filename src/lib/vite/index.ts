@@ -39,7 +39,7 @@ export interface SvelteMailPluginOptions {
 }
 
 /**
- * The `svelte-mail` Vite plugin.
+ * The `svelte-email-kit` Vite plugin.
  *
  * An `enforce: 'pre'` `transform` that runs the bake pipeline
  * (extract → {@link generateTailwindMap} → {@link bakeTailwind}) on every
@@ -120,7 +120,7 @@ export function svelteMail(options: SvelteMailPluginOptions = {}): import('vite'
 	}
 
 	return {
-		name: 'svelte-mail',
+		name: 'svelte-email-kit',
 		enforce: 'pre',
 
 		configResolved(config) {
@@ -178,7 +178,7 @@ export function svelteMail(options: SvelteMailPluginOptions = {}): import('vite'
 					const previewPort = options.preview?.port ?? basePort + 1;
 					const previewServer = startPreviewServer(server, previewPort, resolvedDir);
 					server.config.logger.info(
-						`  \x1b[32m➜\x1b[39m  \x1b[1msvelte-mail\x1b[22m preview: \x1b[36mhttp://localhost:${previewPort}/\x1b[39m`
+						`  \x1b[32m➜\x1b[39m  \x1b[1msvelte-email-kit\x1b[22m preview: \x1b[36mhttp://localhost:${previewPort}/\x1b[39m`
 					);
 					httpServer.once('close', () => previewServer.close());
 				};
@@ -213,7 +213,7 @@ export function svelteMail(options: SvelteMailPluginOptions = {}): import('vite'
 					return `  - "${d.expression}"${at}`;
 				});
 				throw new Error(
-					`svelte-mail: ${filename} uses dynamic class expression(s) that can't be statically analyzed:\n` +
+					`svelte-email-kit: ${filename} uses dynamic class expression(s) that can't be statically analyzed:\n` +
 						`${lines.join('\n')}\n` +
 						`Only static and conditional-literal classes are supported ` +
 						`(e.g. class="bg-blue-500" or class={cond ? 'bg-red-500' : 'bg-blue-500'}). ` +
@@ -233,7 +233,7 @@ export function svelteMail(options: SvelteMailPluginOptions = {}): import('vite'
 			const classesNotFound = classes.filter((cls) => !(cls in map.inline) && !(cls in map.rename));
 			if (classesNotFound.length > 0) {
 				console.warn(
-					`svelte-mail: ${filename} has class token(s) not recognized as Tailwind utilities ` +
+					`svelte-email-kit: ${filename} has class token(s) not recognized as Tailwind utilities ` +
 						`(left as-is): ${classesNotFound.join(', ')}. ` +
 						`Ignore this if they're intentional non-Tailwind classes; otherwise check for typos.`
 				);
