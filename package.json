@@ -11,8 +11,7 @@
 	"homepage": "https://github.com/beynar/svelte-email#readme",
 	"bugs": "https://github.com/beynar/svelte-email/issues",
 	"publishConfig": {
-		"access": "public",
-		"provenance": true
+		"access": "public"
 	},
 	"scripts": {
 		"dev": "vite dev",
