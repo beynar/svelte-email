@@ -2,6 +2,10 @@
 
 All notable changes to `svelte-plugin-mail` are documented here. This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 0.3.1 — 2026-06-17
+
+Verification release — confirms CI trusted publishing under the renamed package. No code changes.
+
 ## 0.3.0 — 2026-06-17
 
 ### Changed
