@@ -2,6 +2,10 @@
 
 All notable changes to `svelte-email-plugin` are documented here. This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 0.4.1 — 2026-06-18
+
+Re-published via CI trusted publishing (npm OIDC + provenance), and corrects the `repository` URL metadata to `beynar/svelte-email-plugin`. No code changes from `0.4.0`.
+
 ## 0.4.0 — 2026-06-18
 
 ### Changed
