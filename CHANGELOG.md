@@ -2,6 +2,12 @@
 
 All notable changes to `svelte-email-plugin` are documented here. This project adheres to [Semantic Versioning](https://semver.org/).
 
+## 0.5.2 — 2026-06-18
+
+### Changed
+
+- The CLI's install prompt now lets you **pick the package manager** (pnpm/npm/yarn/bun, defaulting to the detected one) or skip — instead of a yes/no for the detected one only.
+
 ## 0.5.1 — 2026-06-18
 
 ### Added

@@ -77,14 +77,22 @@ async function main() {
 	let { installed, wired } = detectSetup(process.cwd());
 	const pm = detectPackageManager(process.cwd());
 	if (!installed) {
-		const yes = await p.confirm({
-			message: `svelte-email-plugin isn't installed here. Install it now with ${pm}?`
+		const choice = await p.select({
+			message: 'Install svelte-email-plugin now?',
+			initialValue: pm,
+			options: [
+				{ value: 'pnpm', label: pm === 'pnpm' ? 'pnpm (detected)' : 'pnpm' },
+				{ value: 'npm', label: pm === 'npm' ? 'npm (detected)' : 'npm' },
+				{ value: 'yarn', label: pm === 'yarn' ? 'yarn (detected)' : 'yarn' },
+				{ value: 'bun', label: pm === 'bun' ? 'bun (detected)' : 'bun' },
+				{ value: 'skip', label: "Skip — I'll install it myself" }
+			]
 		});
-		if (p.isCancel(yes)) return p.cancel('Cancelled.');
-		if (yes) {
-			const { cmd, args } = installCommand(pm);
+		if (p.isCancel(choice)) return p.cancel('Cancelled.');
+		if (choice !== 'skip') {
+			const { cmd, args } = installCommand(choice);
 			const sp = p.spinner();
-			sp.start(`Installing svelte-email-plugin (${pm})`);
+			sp.start(`Installing svelte-email-plugin (${choice})`);
 			try {
 				await run(cmd, args);
 				installed = true;
